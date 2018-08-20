@@ -96,7 +96,21 @@ typedef struct Color
 	}
 	inline void hsv2rgb()
 	{
-		
+		float _h = h / 60.f, _s = s / 100.f, _v = v / 100.f;
+		int hi = (int)floor(_h) % 6;
+		uint8_t f = _h - floor(_h);
+		uint8_t p = 255.f * _v * (1.f - _s);
+		uint8_t q = 255.f * _v * (1.f - (_s * f));
+		uint8_t t = 255.f * _v * (1 - (_s * (1 - f)));
+		_v *= 255.f;
+		switch (hi) {
+		case 0: r = _v; g = t; b = p; break;
+		case 1: r = q; g = _v; b = p; break;
+		case 2: r = p; g = _v; b = t; break;
+		case 3: r = p; g = q; b = _v; break;
+		case 4: r = t; g = p; b = _v; break;
+		case 5: r = _v; g = p; b = q; break;
+		}
 	}
 	// funcs
 	inline float luminosity()
