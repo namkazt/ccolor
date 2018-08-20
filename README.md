@@ -1,5 +1,5 @@
 # ccolor
-Single-header color libary for C port from Qix-/color
+Single-header color libary for C port from https://github.com/Qix-/color
 
 Not sure if anyone do this or not but here is it.
 
