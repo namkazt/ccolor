@@ -112,6 +112,10 @@ typedef struct Color
 		case 5: r = _v; g = p; b = q; break;
 		}
 	}
+
+#define WARP_HSL(func)  rgb2hsl(); func; hsl2rgb();
+#define WARP_HSV(func)  rgb2hsv(); func; hsv2rgb();
+
 	// funcs
 	inline float luminosity()
 	{
@@ -134,11 +138,10 @@ typedef struct Color
 	inline bool isDark() { return (float)(r * 299 + g * 587 + b * 114) / 1000.0f < 128.0f; }
 	inline bool isLight() { return !isDark(); }
 	inline Color negate() { return RGB(255-r, 255-g, 255-b); }
-	inline Color lighten(float ratio)
-	{
-		rgb2hsl();
-		l -= l * ratio;
-	}
+	inline void lighten(float ratio) { WARP_HSL(l += l * ratio) }
+	inline void darken(float ratio) { WARP_HSL(l -= l * ratio) }
+	inline void saturate(float ratio) { WARP_HSL(s += s * ratio) }
+	inline void desaturate(float ratio) { WARP_HSL(s -= s * ratio) }
 };
 
 
