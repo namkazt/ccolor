@@ -1,7 +1,6 @@
 #ifndef _PP_COLOR_H_
 #define _PP_COLOR_H_
 
-#include <3ds/services/am.h>
 #include <functional>
 
 #define M_MIN(a,b) (((a) < (b)) ? (a) : (b))
@@ -22,8 +21,8 @@ struct Color;
 typedef struct Color
 {
 	Color() : r(255), g(255), b(255), a(255) {};
-	Color(u8 _r, u8 _g, u8 _b, u8 _a) : r(_r), g(_g), b(_b), a(_a) {};
-	u8 r, g, b, a;
+	Color(uint8_t _r, uint8_t _g, uint8_t _b, uint8_t _a) : r(_r), g(_g), b(_b), a(_a) {};
+	uint8_t r, g, b, a;
 	float h, l, s, v;
 	u32 toU32() const { return (((a) & 0xFF) << 24) | (((b) & 0xFF) << 16) | (((g) & 0xFF) << 8) | (((r) & 0xFF) << 0); }
 	// type convert
