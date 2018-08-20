@@ -25,7 +25,7 @@ typedef struct Color
 	uint8_t r, g, b, a;
 	float h, l, s, v;
 	u32 toU32() const { return (((a) & 0xFF) << 24) | (((b) & 0xFF) << 16) | (((g) & 0xFF) << 8) | (((r) & 0xFF) << 0); }
-	// type convert
+	// type conversions
 	inline void rgb2hsl()
 	{
 		float _r = r / 255.f, _g = g / 255.f, _b = b / 255.f;
@@ -142,6 +142,16 @@ typedef struct Color
 	inline void darken(float ratio) { WARP_HSL(l -= l * ratio) }
 	inline void saturate(float ratio) { WARP_HSL(s += s * ratio) }
 	inline void desaturate(float ratio) { WARP_HSL(s -= s * ratio) }
+	inline Color grayscale() { float v = r * 0.3f + g * 0.59f + b * 0.11f; return RGB(v, v, v); }
+	inline void rorate(float degrees) { WARP_HSL( h = (int)(h + degrees) % 360; h = h < 0 ? 360 + h : h; ) }
+	inline Color mix(Color mixin, float weight)
+	{
+		float w = 2.f * weight - 1;
+		uint8_t _a = a - mixin.a;
+		float w1 = (((w * _a == -1) ? w : (w + _a) / (1.f + w * _a)) + 1.f) / 2.f;
+		float w2 = 1 - w1;
+		return RGBA(w1 * r + w2 * mixin.r, w1 * g + w2 * mixin.g, w1 * b + w2 * mixin.b, a * weight + mixin.a * (1 - weight));
+	}
 };
 
 
